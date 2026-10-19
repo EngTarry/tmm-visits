@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#0f3d3e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="زيارات TMM">
+<title>زيارات المناديب - TMM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3f6f5; --card:#ffffff; --ink:#0f1f1f; --muted:#6b7b7a; --line:#e3e9e8;
+  --brand:#0f3d3e; --brand2:#14706b; --accent:#e0a526; --ok:#1c9a5a; --err:#c0392b;
+  --r:18px; --shadow:0 8px 24px rgba(15,61,62,.08);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Tajawal',system-ui,sans-serif;font-size:16px}
+.hide{display:none!important}
+.hero{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:22px 18px 56px;border-radius:0 0 28px 28px}
+.hero .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.hero .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.5px}
+.logo{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.15);display:grid;place-items:center;font-weight:800}
+.out{background:rgba(255,255,255,.14);border:0;color:#fff;border-radius:10px;padding:7px 12px;font:inherit;font-size:13px;cursor:pointer}
+.hero h1{margin:14px 0 4px;font-size:22px}
+.hero p{margin:0;opacity:.85;font-size:14px}
+.wrap{max-width:560px;margin:-40px auto 40px;padding:0 14px}
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:18px;margin-bottom:14px}
+.label{font-weight:700;margin:0 0 10px;display:flex;align-items:center;gap:6px}
+.req{color:var(--err)}
+.opt{color:var(--muted);font-weight:500;font-size:13px}
+input,textarea{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font:inherit;background:#fbfcfc;color:var(--ink);outline:none;transition:.15s}
+input:focus,textarea:focus{border-color:var(--brand2);background:#fff;box-shadow:0 0 0 3px rgba(20,112,107,.12)}
+textarea{min-height:84px;resize:vertical}
+.field{margin-bottom:16px}.field:last-child{margin-bottom:0}
+.hint{font-size:13px;color:var(--muted);margin-top:6px}
+.err{color:var(--err);font-size:14px;margin-top:8px;display:none}
+.btn{width:100%;border:0;border-radius:16px;padding:16px;font:inherit;font-size:18px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand2));box-shadow:0 10px 24px rgba(15,61,62,.3);cursor:pointer;display:flex;justify-content:center;align-items:center;gap:10px}
+.btn[disabled]{opacity:.7}
+.submit{position:sticky;bottom:12px}
+.spin{width:20px;height:20px;border:3px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:sp 1s linear infinite;display:none}
+.busy .spin{display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+/* login */
+.lock{width:64px;height:64px;border-radius:20px;margin:6px auto 14px;background:#e8f2f1;display:grid;place-items:center;font-size:30px}
+.login h2{text-align:center;margin:0 0 6px;font-size:20px}
+.login p.sub{text-align:center;color:var(--muted);margin:0 0 18px;font-size:14px}
+#pin{text-align:center;font-size:28px;letter-spacing:14px;padding:14px;direction:ltr}
+.welcome{display:flex;align-items:center;gap:12px}
+.av{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--brand2);color:#fff;font-weight:800;font-size:18px;flex:none}
+.welcome b{display:block;font-size:17px}
+.welcome span{color:var(--muted);font-size:13px}
+/* gps */
+.gps{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:10px;padding:12px;border-radius:12px;border:1.5px dashed var(--brand2);background:#f2f9f8;color:var(--brand);font:inherit;font-weight:700;cursor:pointer}
+.gps.done{border-style:solid;background:#e9f7ef;border-color:var(--ok);color:var(--ok)}
+.maplink{display:inline-flex;align-items:center;gap:6px;margin-top:8px;color:var(--brand2);font-weight:700;text-decoration:none;font-size:14px}
+/* chips */
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:14px;padding:11px 10px;font:inherit;font-weight:600;font-size:14px;cursor:pointer;color:inherit;line-height:1.35}
+.chip.on{color:#fff;border-color:transparent;background:var(--brand2)}
+.chip.on[data-i="2"]{background:var(--ok)}
+.chip.on[data-i="3"]{background:var(--accent)}
+/* photos */
+.photos{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.ph{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:#eef2f1}
+.ph img{width:100%;height:100%;object-fit:cover}
+.ph button{position:absolute;top:4px;left:4px;width:22px;height:22px;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:13px;line-height:22px;cursor:pointer;padding:0}
+.add{aspect-ratio:1;border-radius:12px;border:1.5px dashed var(--line);display:grid;place-items:center;font-size:26px;color:var(--brand2);cursor:pointer;background:#fbfcfc}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:9;max-width:90vw;text-align:center}
+.toast.show{opacity:.95}
+/* success */
+.success{text-align:center;padding:40px 20px}
+.check{width:96px;height:96px;margin:0 auto 18px;border-radius:50%;background:var(--ok);display:grid;place-items:center;animation:pop .45s cubic-bezier(.2,1.6,.4,1)}
+.check svg{width:54px;height:54px;stroke:#fff;stroke-width:4;fill:none;stroke-dasharray:60;stroke-dashoffset:60;animation:draw .5s .25s forwards}
+@keyframes pop{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes draw{to{stroke-dashoffset:0}}
+.success h2{margin:0 0 6px;font-size:22px}
+.success .id{color:var(--muted);font-size:14px;margin-bottom:22px}
+.loading{text-align:center;color:var(--muted);padding:30px}
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="top">
+    <div class="brand"><div class="logo">TMM</div><span>TMM Holding</span></div>
+    <button class="out hide" id="logout" type="button">تسجيل خروج</button>
+  </div>
+  <h1>تسجيل زيارة ميدانية</h1>
+  <p id="today"></p>
+</div>
+
+<div class="wrap">
+  <!-- loading -->
+  <div class="card loading" id="vLoading">جارٍ التحميل...</div>
+
+  <!-- login -->
+  <form class="card login hide" id="vLogin" novalidate>
+    <div class="lock">🔒</div>
+    <h2>تسجيل الدخول</h2>
+    <p class="sub">أدخل رمز الدخول الخاص بك</p>
+    <input id="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="off" placeholder="••••">
+    <div class="err" id="e-pin"></div>
+    <div style="height:16px"></div>
+    <button class="btn" id="loginBtn" type="submit"><span class="spin"></span><span>دخول</span></button>
+  </form>
+
+  <!-- form -->
+  <form id="vForm" class="hide" novalidate>
+    <div class="card welcome">
+      <div class="av" id="av"></div>
+      <div><b id="repName"></b><span>مرحباً بك، سجّل زيارتك</span></div>
+    </div>
+
+    <div class="card">
+      <div class="field">
+        <p class="label">الحي <span class="req">*</span></p>
+        <input id="district" autocomplete="off" placeholder="مثال: حي الروضة">
+        <div class="err" id="e-district">اكتب اسم الحي</div>
+      </div>
+      <div class="field">
+        <p class="label">رقم جوال العميل <span class="opt">(اختياري)</span></p>
+        <input id="phone" type="tel" inputmode="tel" dir="ltr" style="text-align:right" placeholder="05XXXXXXXX">
+      </div>
+      <div class="field">
+        <p class="label">الموقع <span class="opt">(اختياري)</span></p>
+        <textarea id="location" placeholder="الصق رابط الخريطة أو اكتب العنوان"></textarea>
+        <button type="button" class="gps" id="gps">📍 تحديد موقعي الحالي</button>
+        <div class="hint" id="gpsHint"></div>
+        <a class="maplink hide" id="mapLink" target="_blank" rel="noopener">🗺️ عرض الموقع على الخريطة</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="field">
+        <p class="label">نتيجة الزيارة <span class="opt">(اختياري)</span></p>
+        <div class="chips" id="chips"></div>
+      </div>
+      <div class="field">
+        <p class="label">ملاحظات <span class="opt">(اختياري)</span></p>
+        <textarea id="notes" placeholder="أي تفاصيل إضافية عن الزيارة"></textarea>
+      </div>
+      <div class="field">
+        <p class="label">صور الموقع <span class="opt">(اختياري، حتى 5 صور)</span></p>
+        <div class="photos" id="photos"></div>
+        <input type="file" id="file" accept="image/*" multiple hidden>
+      </div>
+    </div>
+
+    <button class="btn submit" id="send" type="submit"><span class="spin"></span><span id="sendTxt">إرسال الزيارة</span></button>
+    <footer>TMM · نظام زيارات المناديب</footer>
+  </form>
+
+  <!-- success -->
+  <div class="card success hide" id="vOk">
+    <div class="check"><svg viewBox="0 0 52 52"><path d="M14 27l8 8 16-17"/></svg></div>
+    <h2>تم إرسال الزيارة بنجاح ✓ شكراً لك</h2>
+    <div class="id" id="okId"></div>
+    <button class="btn" id="again" type="button">＋ تسجيل زيارة أخرى</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// Google Apps Script endpoint (used when the page is hosted outside Google, e.g. GitHub Pages)
+const API = 'https://script.google.com/macros/s/AKfycbxNNj1_qRO78TCdLtdmJsBPgXSeGJa7NuhVQCk7yTHYXT7Or2KiVDcOVBjsKxFw1Chzuw/exec';
+const RESULTS = ['تم التواصل مع الشخص المسؤول', 'تم ترك الكرت أو منشور', 'طلب تعاقد', 'موقع مستقبلي'];
+
+const $ = id => document.getElementById(id);
+const S = { pin:'', rep:'', result:'', lat:'', lng:'', photos:[], start:new Date().toISOString() };
+
+function getLS(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function setLS(k,v){ try{ v==null ? localStorage.removeItem(k) : localStorage.setItem(k,v); }catch(e){} }
+function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),3000); }
+function show(id){ ['vLoading','vLogin','vForm','vOk'].forEach(v=>$(v).classList.toggle('hide', v!==id)); $('logout').classList.toggle('hide', id==='vLogin'||id==='vLoading'); window.scrollTo({top:0}); }
+function busy(btn,on){ btn.disabled=on; btn.classList.toggle('busy',on); }
+
+// One call path for both hosts
+function call(data){
+  if (window.google && google.script && google.script.run) {
+    return new Promise((res,rej)=>google.script.run.withSuccessHandler(res).withFailureHandler(e=>rej(new Error((e&&e.message)||String(e)))).api(data));
+  }
+  return fetch(API,{method:'POST', body:JSON.stringify(data), credentials:'omit', redirect:'follow'})
+    .then(r=>r.json()).then(r=>{ if(!r || !r.ok) throw new Error((r&&r.error)||'خطأ غير معروف'); return r; });
+}
+function errMsg(e){
+  const m=(e&&e.message)||'';
+  if(m.indexOf('PIN_WRONG')>-1) return 'PIN_WRONG';
+  return m.replace(/^Error:\s*/,'') || 'تحقق من الاتصال وحاول مجدداً';
+}
+
+$('today').textContent = new Date().toLocaleDateString('ar-SA',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+/* ---------- login ---------- */
+function enter(rep, pin){
+  S.rep=rep; S.pin=pin; setLS('tmm_pin', pin);
+  $('repName').textContent=rep; $('av').textContent=rep.trim().charAt(0);
+  S.start=new Date().toISOString();
+  show('vForm');
+}
+$('vLogin').onsubmit=e=>{
+  e.preventDefault();
+  const pin=$('pin').value.trim(), er=$('e-pin');
+  if(!pin){ er.textContent='أدخل رمز الدخول'; er.style.display='block'; return; }
+  busy($('loginBtn'),true); er.style.display='none';
+  call({action:'login', pin}).then(r=>{ busy($('loginBtn'),false); $('pin').value=''; enter(r.rep, pin); })
+    .catch(x=>{ busy($('loginBtn'),false); const m=errMsg(x); er.textContent = m==='PIN_WRONG' ? 'رمز الدخول غير صحيح' : m; er.style.display='block'; $('pin').select(); });
+};
+$('pin').oninput=()=>$('e-pin').style.display='none';
+$('logout').onclick=()=>{ setLS('tmm_pin',null); S.pin=''; S.rep=''; resetForm(); show('vLogin'); setTimeout(()=>$('pin').focus(),50); };
+
+(function boot(){
+  const saved=getLS('tmm_pin');
+  if(!saved){ show('vLogin'); return; }
+  call({action:'login', pin:saved}).then(r=>enter(r.rep, saved)).catch(()=>{ setLS('tmm_pin',null); show('vLogin'); });
+})();
+
+/* ---------- result chips ---------- */
+RESULTS.forEach((r,i)=>{
+  const c=document.createElement('button'); c.type='button'; c.className='chip'; c.dataset.i=i; c.textContent=r;
+  c.onclick=()=>{ S.result = S.result===r ? '' : r; document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x.textContent===S.result)); };
+  $('chips').appendChild(c);
+});
+
+/* ---------- GPS ---------- */
+$('gps').onclick=()=>{
+  if(!navigator.geolocation){ $('gpsHint').textContent='المتصفح لا يدعم تحديد الموقع، الصق رابط الخريطة بدلاً من ذلك.'; return; }
+  $('gps').textContent='⏳ جارٍ تحديد الموقع...'; $('gpsHint').textContent='';
+  navigator.geolocation.getCurrentPosition(p=>{
+    S.lat=p.coords.latitude.toFixed(6); S.lng=p.coords.longitude.toFixed(6);
+    $('gps').textContent='✓ تم تحديد الموقع'; $('gps').classList.add('done');
+    $('gpsHint').textContent='الدقة تقريباً '+Math.round(p.coords.accuracy)+' متر';
+    const link='https://www.google.com/maps/search/?api=1&query='+S.lat+','+S.lng;
+    const a=$('mapLink'); a.href=link; a.classList.remove('hide');
+    const loc=$('location'), cur=loc.value.replace(/https:\/\/www\.google\.com\/maps\/search\/\?api=1&query=[-\d.,]+/g,'').trim();
+    loc.value = cur ? cur+'\n'+link : link;
+  }, e=>{
+    $('gps').textContent='📍 تحديد موقعي الحالي';
+    $('gpsHint').textContent = e.code===1 ? 'لم يُسمح بالوصول للموقع. فعّل إذن الموقع للمتصفح ثم حاول مجدداً، أو الصق رابط الخريطة.' : 'تعذّر تحديد الموقع، حاول مجدداً أو الصق رابط الخريطة.';
+  }, {enableHighAccuracy:true, timeout:20000, maximumAge:0});
+};
+
+/* ---------- photos ---------- */
+function paintPhotos(){
+  const box=$('photos'); box.innerHTML='';
+  S.photos.forEach((p,i)=>{
+    const d=document.createElement('div'); d.className='ph';
+    const img=document.createElement('img'); img.src='data:image/jpeg;base64,'+p.b64;
+    const x=document.createElement('button'); x.type='button'; x.textContent='×';
+    x.onclick=()=>{ S.photos.splice(i,1); paintPhotos(); };
+    d.append(img,x); box.appendChild(d);
+  });
+  if(S.photos.length<5){ const a=document.createElement('div'); a.className='add'; a.textContent='＋'; a.onclick=()=>$('file').click(); box.appendChild(a); }
+}
+function shrink(file){
+  return new Promise((res,rej)=>{
+    const url=URL.createObjectURL(file); const im=new Image();
+    im.onload=()=>{
+      const M=1280, k=Math.min(1, M/Math.max(im.width,im.height));
+      const c=document.createElement('canvas'); c.width=Math.round(im.width*k); c.height=Math.round(im.height*k);
+      c.getContext('2d').drawImage(im,0,0,c.width,c.height); URL.revokeObjectURL(url);
+      res({b64:c.toDataURL('image/jpeg',0.7).split(',')[1]});
+    };
+    im.onerror=()=>{ URL.revokeObjectURL(url); rej(new Error('img')); };
+    im.src=url;
+  });
+}
+$('file').onchange=async e=>{
+  const all=[...e.target.files], files=all.slice(0, 5-S.photos.length);
+  if(all.length>files.length) toast('الحد الأقصى 5 صور');
+  for(const f of files){ try{ S.photos.push(await shrink(f)); }catch(_){ toast('تعذّر قراءة إحدى الصور'); } }
+  e.target.value=''; paintPhotos();
+};
+paintPhotos();
+
+/* ---------- submit ---------- */
+$('district').oninput=()=>$('e-district').style.display='none';
+$('vForm').onsubmit=e=>{
+  e.preventDefault();
+  if(!$('district').value.trim()){ $('e-district').style.display='block'; $('district').focus(); toast('اكتب اسم الحي'); return; }
+  const btn=$('send'); busy(btn,true); $('sendTxt').textContent = S.photos.length ? 'جارٍ رفع الصور والإرسال...' : 'جارٍ الإرسال...';
+  call({ action:'submit', pin:S.pin, district:$('district').value, phone:$('phone').value, location:$('location').value,
+         lat:S.lat, lng:S.lng, result:S.result, notes:$('notes').value, photos:S.photos, startTime:S.start })
+    .then(r=>{ busy(btn,false); $('sendTxt').textContent='إرسال الزيارة'; $('okId').textContent='رقم الزيارة: '+r.id; show('vOk'); })
+    .catch(x=>{
+      busy(btn,false); $('sendTxt').textContent='إرسال الزيارة';
+      const m=errMsg(x);
+      if(m==='PIN_WRONG'){ toast('انتهت صلاحية الدخول، سجّل الدخول مجدداً'); setLS('tmm_pin',null); show('vLogin'); }
+      else toast('لم يتم الإرسال: '+m);
+    });
+};
+
+function resetForm(){
+  ['district','phone','location','notes'].forEach(id=>$(id).value='');
+  S.result=''; S.lat=''; S.lng=''; S.photos=[]; S.start=new Date().toISOString();
+  document.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));
+  $('gps').classList.remove('done'); $('gps').textContent='📍 تحديد موقعي الحالي'; $('gpsHint').textContent=''; $('mapLink').classList.add('hide');
+  paintPhotos();
+}
+$('again').onclick=()=>{ resetForm(); show('vForm'); };
+</script>
+</body>
+</html>
